@@ -67,7 +67,7 @@ div.stButton > button:first-child:hover { background-color: var(--pink-primary-d
 """, unsafe_allow_html=True)
 
 st.title("LGR")
-st.caption("Calculadora de Lugar Geométrico das Raízes — apoio rápido para provas de Sistemas de Controle")
+st.caption("Calculadora de Lugar Geométrico das Raízes — Maria Luiza da costa barbosa")
 
 # ============================================================
 # Entrada do sistema
