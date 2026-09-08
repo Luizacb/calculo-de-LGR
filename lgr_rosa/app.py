@@ -1,22 +1,11 @@
-"""
-Calculadora de LGR (Lugar Geométrico das Raízes) — versão rosa.
 
-Interface própria e reorganizada, otimizada para uso rápido durante prova.
-Toda a matemática vem de core/calculos.py (validada por testes de regressão
-contra o projeto original em tests/test_regression.py).
-"""
 import numpy as np
 import matplotlib.pyplot as plt
 import streamlit as st
 
 from core import calculos as calc
 
-st.set_page_config(page_title="LGR Rosa · Calculadora de Sistemas de Controle",
-                    layout="wide", page_icon="🌸")
-
-# ============================================================
-# Tema rosa
-# ============================================================
+st.set_page_config(page_title="LGR· Calculadora de Sistemas de Controle")
 st.markdown("""
 <style>
 :root {
@@ -77,7 +66,7 @@ div.stButton > button:first-child:hover { background-color: var(--pink-primary-d
 </style>
 """, unsafe_allow_html=True)
 
-st.title("🌸 LGR Rosa")
+st.title("LGR")
 st.caption("Calculadora de Lugar Geométrico das Raízes — apoio rápido para provas de Sistemas de Controle")
 
 # ============================================================
@@ -127,7 +116,7 @@ with st.container(border=True):
                 y_max_usr = st.number_input("y max", value=10.0, format="%.2f")
             lim_usr = (x_min_usr, x_max_usr, y_min_usr, y_max_usr)
 
-calcular = st.button("🌸 Calcular LGR", type="primary")
+calcular = st.button("Calcular LGR", type="primary")
 if calcular:
     st.session_state["calcular_lgr"] = True
 
