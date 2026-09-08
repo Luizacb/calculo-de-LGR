@@ -1,4 +1,4 @@
-# 🌸 LGR Rosa — Calculadora de Lugar Geométrico das Raízes
+# 🌸 LGR — Calculadora de Lugar Geométrico das Raízes
 
 Aplicativo web de apoio para exercícios/provas de Sistemas de Controle
 (cálculo do LGR — Lugar Geométrico das Raízes).
@@ -57,11 +57,9 @@ pytest tests/ -v
 4. Clique em **Deploy** — o Streamlit Cloud instala automaticamente as
    dependências listadas em `requirements.txt`.
 
-Não há segredos, chaves de API nem variáveis de ambiente necessárias.
-
 ## Funcionalidades reproduzidas
 
-Tudo que o app original calcula e exibe foi reproduzido:
+Tudo que o app calcula e exibe:
 
 - Montagem da equação característica `D(s) + K·N(s) = 0` a partir de
   G(s) = K·N_G/D_G e H(s) = N_H/D_H
@@ -81,85 +79,3 @@ Tudo que o app original calcula e exibe foi reproduzido:
 - Critério do módulo — cálculo de K no ponto de teste
 - Todos os 7 gráficos individuais + o gráfico consolidado do LGR completo
 - Limites de gráfico manuais (opcional)
-
-## Principais decisões de projeto
-
-- **Separação matemática/interface**: `core/calculos.py` não importa
-  Streamlit. Isso permite testar a matemática isoladamente e reaproveitar
-  o núcleo em outro front-end no futuro, se quiser.
-- **Mesmas bibliotecas do original**: `numpy.roots`, `numpy.convolve`,
-  `numpy.polyder`/`polyadd`/`polysub`/`polyval` e `sympy` para a tabela de
-  Routh simbólica — nada foi trocado por alternativas (ex.: `scipy.signal`,
-  `python-control`), justamente para preservar a equivalência numérica.
-- **Reorganização da interface**: os 12 passos didáticos do original foram
-  agrupados em 8 abas temáticas + um bloco de **"Resultado em destaque"**
-  sempre visível no topo (polos/zeros, centroide, K crítico, cruzamento
-  jω, veredito do ponto de teste), pensado para consulta rápida durante
-  uma prova, sem precisar abrir vários expanders.
-- **Identidade visual rosa**: paleta baseada em `#d6336c` (rosa principal),
-  fundos claros (`#fff0f6`), cartões brancos com borda rosa suave — sem
-  animações, mantendo o foco em velocidade de leitura.
-
-## Limitações e diferenças conhecidas em relação ao original
-
-Nenhuma diferença **numérica** foi encontrada (ver seção de testes
-abaixo). As duas únicas ressalvas são de **comportamento conhecido do
-original, preservado de propósito**:
-
-1. **Tabela de Routh com pivô nulo**: quando um elemento da primeira
-   coluna é exatamente zero, o algoritmo original interrompe o cálculo
-   sem aplicar o método do polinômio auxiliar (caso clássico de sistema
-   marginalmente estável / raízes no eixo jω). A nova versão reproduz
-   esse comportamento por padrão para bater com o gabarito, mas o
-   `core/calculos.py` sinaliza o caso com um comentário
-   `# DESVIO DO ORIGINAL:` explicando a limitação, caso queira estender.
-2. **Tolerância de 5° no critério do ângulo** (Passo "Ponto de teste"): é
-   a mesma tolerância generosa do original. Ela fica visível na interface
-   (`core.calculos.TOL_ANGULO_LGR`) para você saber que pontos "no limite"
-   podem ser classificados como pertencentes ao LGR mesmo com um desvio
-   de alguns graus.
-
-## Resultados dos testes comparativos com o original
-
-Suíte: `tests/test_regression.py` — 124 testes, 9 conjuntos de entrada
-(polos reais, polos complexos, polo na origem, com/sem zeros finitos,
-realimentação H(s)≠1, ordem alta, caso de fronteira n_p=n_z+1) ×
-categorias de cálculo (polos/zeros, segmentos, assíntotas, breakaway,
-cruzamento jω, K crítico via Routh, ramos completos do LGR, critério do
-ângulo/módulo em 5 pontos de teste, formatação LaTeX, entradas
-inválidas).
-
-```
-124 passed in ~5s
-```
-
-Exemplo de comparação (um dos 9 cenários, os demais seguem o mesmo
-padrão nos logs de teste):
-
-```
-Entrada: G(s) = 1/(s²+2s+5), H(s)=1        (polos complexos)
-Original → polos = -1+2j, -1-2j
-Novo     → polos = -1+2j, -1-2j            (diferença: 0)
-
-Original → K crítico (Routh) = 6.0000
-Novo     → K crítico (Routh) = 6.0000      (diferença: 0)
-```
-
-Suíte de smoke test da interface: `tests/test_app_smoke.py` — 6 testes,
-via `streamlit.testing.v1.AppTest` (executa a árvore real de widgets sem
-navegador): carregamento padrão, clique no botão calcular, polos
-complexos, sistema sem zeros finitos, entrada inválida e ordem alta.
-
-```
-6 passed in ~14s
-```
-
-**Total: 130/130 testes passando.**
-
-> Observação de ambiente: não foi possível gerar uma captura de tela real
-> do app renderizado neste momento, pois a instalação do navegador
-> headless (Playwright/Chromium) foi bloqueada pela política de rede do
-> sandbox de desenvolvimento usado para construir o projeto. Isso não
-> afeta a validação funcional (os smoke tests já executam o app de
-> verdade), mas vale conferir visualmente ao rodar `streamlit run app.py`
-> localmente.
