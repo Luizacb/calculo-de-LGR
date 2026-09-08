@@ -1,22 +1,13 @@
 # 🌸 LGR Rosa — Calculadora de Lugar Geométrico das Raízes
 
 Aplicativo web de apoio para exercícios/provas de Sistemas de Controle
-(cálculo do LGR — Lugar Geométrico das Raízes). Implementação **própria e
-independente**, com identidade visual rosa, criada a partir da análise
-funcional e matemática do projeto
-[`igorservo159/calc_lgr`](https://github.com/igorservo159/calc_lgr)
-([app original](https://calc-lgr.streamlit.app)), mas **sem copiar** seu
-código de interface.
-
-> A prioridade nº 1 deste projeto é a precisão matemática. Toda a lógica
-> de cálculo foi validada por uma suíte de 124 testes de regressão contra
-> o algoritmo original antes de qualquer linha da interface ser escrita.
+(cálculo do LGR — Lugar Geométrico das Raízes).
 
 ## Estrutura do projeto
 
 ```
 lgr_rosa/
-├── app.py                      # Interface Streamlit (rosa) — só exibe, não calcula
+├── app.py                      # Interface Streamlit — só exibe, não calcula
 ├── core/
 │   ├── __init__.py
 │   └── calculos.py             # TODA a matemática do LGR (sem depender de Streamlit)
